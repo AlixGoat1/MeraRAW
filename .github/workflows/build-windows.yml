@@ -1,0 +1,17 @@
+name: Build Windows App
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: dtolnay/rust-toolchain@stable
+      - run: bun install
+      - run: bun x tauri build --no-bundle
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MeraRAW-Windows
+          path: src-tauri/target/release/MeraRAW.exe

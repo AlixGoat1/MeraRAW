@@ -10,6 +10,11 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - uses: dtolnay/rust-toolchain@stable
       - run: bun install
+      - name: Download skyseg model
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "core/models"
+          curl.exe -L "https://huggingface.co" -o "core/models/skyseg.onnx"
       - run: bun x tauri build --no-bundle
       - uses: actions/upload-artifact@v4
         with:
@@ -17,3 +22,4 @@ jobs:
           path: |
             src-tauri/target/release/*.exe
             !src-tauri/target/release/build/**
+            core/models/skyseg.onnx
